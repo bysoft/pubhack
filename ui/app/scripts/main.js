@@ -2,7 +2,6 @@ require.config({
     paths: {
         jquery: '../components/jquery/jquery',
         bootstrap: 'vendor/bootstrap',
-        hello: './hello',
         pub: './pub'
     },
     shim: {
@@ -13,10 +12,8 @@ require.config({
     }
 });
 
-require(['app', 'jquery', 'bootstrap', 'hello', 'pub'], function (app, $, hello, pub) {
+require(['app', 'jquery', 'bootstrap', 'pub'], function (app, $, pub) {
     'use strict';
     // use app here
-    console.log(app);
-    console.log(hello);
     console.log('Running jQuery %s', $().jquery);
 });

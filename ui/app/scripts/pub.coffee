@@ -1,23 +1,33 @@
 define (['jquery']), ($)->
   window.read = {}
-  apiKey = 'd42379fde6cb9f006edee8b6c5943565'
+  config = {
+    apiKey : 'd42379fde6cb9f006edee8b6c5943565'
+    endpoint: {
+      base: 'http://api.pearson.com/ftpress/'
+      category:'category'
+    }
+    container: {
+      category: '.subnav ul'
+      book: '#books .nav.nav-list'
+    }
+  }
 
   read.categories = (e)->
     $(e.categories.category).each ->
       snip = '<li><a class=' + @['@id'] + ' href=#list >' + @['#text'] + '</a></li>'
-      $('.subnav ul').append snip
+      $(config.container.category).append snip
 
 
   read.listCategories = (e) ->
-    $('#books .nav.nav-list').empty()
+    $(config.container.book).empty()
     $(e.books.book).each ->
       snip = '<li><a data-bookid=' + @['@id'] + ' href=# >' + @title['#text'] + '</a></li>'
-      $('#books .nav.nav-list').append snip
+      $(config.container.book).append snip
 
 
   read.fetchCategories = (category) ->
     req = $.ajax
-      url: 'http://api.pearson.com/ftpress/' + category + '/book.json?&apikey=' + apiKey + '&jsonp=read.listCategories'
+      url: 'http://api.pearson.com/ftpress/' + category + '/book.json?&apikey=' + config.apiKey + '&jsonp=read.listCategories'
       dataType:'jsonp'
 
   read.listBookBlock = (e) ->
@@ -26,10 +36,9 @@ define (['jquery']), ($)->
 
   read.clickBooks = (e) ->
     $('#book-blocks .nav.nav-list').empty()
-    #https://api.pearson.com/ftpress/book/{book_id}.{format}?jsonp={jsonp_callback}
     console.log e
     $.ajax
-      url:'https://api.pearson.com/ftpress/book/' + e + '.json?&apikey=' + apiKey + '&jsonp=read.listBookBlock'
+      url:'https://api.pearson.com/ftpress/book/' + e + '.json?&apikey=' + config.apiKey + '&jsonp=read.listBookBlock'
       dataType:'jsonp'
 
   events = ->
@@ -48,7 +57,7 @@ define (['jquery']), ($)->
 
     ajaxReq = (data) ->
       req = $.ajax
-          url:'http://api.pearson.com/ftpress/' + data + '.json?apikey=' + apiKey + '&jsonp=read.' + data
+          url:'http://api.pearson.com/ftpress/' + data + '.json?apikey=' + config.apiKey + '&jsonp=read.' + data
           dataType: 'jsonp'
     ajaxReq('categories')
 
